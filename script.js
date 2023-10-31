@@ -1,6 +1,6 @@
 const playerScoreEl = document.getElementById('playerScore');
 const playerChoiceEl = document.getElementById('playerChoice');
-const computerScoreEl = document.getElementById('computerChoice');
+const computerScoreEl = document.getElementById('computerScore');
 const computerChoiceEl = document.getElementById('computerChoice');
 const resultText = document.getElementById('resultText');
 
@@ -27,6 +27,8 @@ const choices = {
 };
 
 let computerChoice = '';
+let playerScoreNumber = 0;
+let computerScoreNumber = 0;
 
 function resetSelected() {
   allGameIcons.forEach((icon) => {
@@ -80,15 +82,36 @@ function displayComputerChoice() {
   }
 }
 
+function updateScore(playerChoice) {
+  console.log(playerChoice, computerChoice)
+  if(playerChoice === computerChoice) {
+    resultText.textContent = "It's a tie.";
+  }
+  else {
+    const choice = choices[playerChoice];
+    
+    if(choice.defeats.includes(computerChoice)) {
+      resultText.textContent = 'You Won!';
+      playerScoreNumber++;
+      playerScoreEl.textContent = playerScoreNumber;
+    }
+    else {
+      resultText.textContent = 'You Lost!';
+      computerScoreNumber++;
+      computerScoreEl.textContent = computerScoreNumber;
+    }
+  }
+}
 
-function checkResult() {
+function checkResult(playerChoice) {
   resetSelected();
   computerRandomChoice();
   displayComputerChoice();
+  updateScore(playerChoice);
 }
 
 function select(playerChoice) {
-  checkResult();
+  checkResult(playerChoice);
   switch(playerChoice) {
     case 'rock':
       playerRock.classList.add('selected');
